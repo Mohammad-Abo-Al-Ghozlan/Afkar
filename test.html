@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afkar — Enterprise-Grade Software Engineering & Digital Product Development</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #05050A;
+            --bg-charcoal: #0D0D14;
+            --bg-graphite: #151520;
+            --accent-blue: #0066FF;
+            --accent-cyan: #00D4FF;
+            --accent-violet: #7B61FF;
+            --accent-mint: #00FFC2;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0C0;
+            --text-tertiary: #66668A;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gradient-primary: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            --gradient-secondary: linear-gradient(135deg, var(--accent-violet), var(--accent-mint));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Enhanced Background System */
+        .background-system {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 40s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .energy-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            background: radial-gradient(circle, var(--accent-violet) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            animation-delay: 5s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-50px, 30px) scale(1.1); }
+            66% { transform: translate(30px, -50px) scale(0.9); }
+        }
+
+        /* Cinematic Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            background: rgba(5, 5, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 1rem 0;
+            background: rgba(5, 5, 10, 0.95);
+        }
+
+        .navbar-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar-brand:hover::after {
+            transform: translateX(0);
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            padding: 0.5rem 1.5rem !important;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1.5rem;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary) !important;
+        }
+
+        .nav-link:hover::before {
+            width: calc(100% - 3rem);
+        }
+
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: var(--text-primary) !important;
+            padding: 0.75rem 2rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Hero Section - Cinematic Experience */
+        .hero-section {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding-top: 120px;
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            gap: 1px;
+            opacity: 0.05;
+        }
+
+        .grid-cell {
+            background: var(--accent-blue);
+            opacity: 0;
+            animation: cellFade 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes cellFade {
+            to { opacity: 0.3; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            animation: badgeEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+
+        @keyframes badgeEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 50%, var(--accent-violet) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 3D Architecture Visualization */
+        .architecture-visualization {
+            position: absolute;
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 800px;
+            height: 600px;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .arch-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-cyan);
+            animation: nodePulse 2s ease-in-out infinite;
+        }
+
+        .arch-line {
+            position: absolute;
+            background: var(--accent-blue);
+            height: 2px;
+            transform-origin: left center;
+            animation: lineFlow 3s linear infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes lineFlow {
+            from { background-position: 0% center; }
+            to { background-position: 200% center; }
+        }
+
+        /* Section System */
+        .section {
+            position: relative;
+            padding: 8rem 0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 6rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Services Grid - Modular Systems */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .service-module {
+            position: relative;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .service-module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .service-module:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
+        }
+
+        .service-module:hover::before {
+            opacity: 0.05;
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: iconShine 3s infinite;
+        }
+
+        @keyframes iconShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .service-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .service-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        /* Process Flow - Engineering Timeline */
+        .process-timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 6rem auto 0;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-primary);
+            transform: translateX(-50%);
+        }
+
+        .process-step {
+            position: relative;
+            margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .process-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .process-step:nth-child(odd) {
+            padding-right: calc(50% + 3rem);
+        }
+
+        .process-step:nth-child(even) {
+            padding-left: calc(50% + 3rem);
+        }
+
+        .step-marker {
+            position: absolute;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-primary);
+            z-index: 2;
+        }
+
+        .process-step:nth-child(odd) .step-marker {
+            right: -20px;
+        }
+
+        .process-step:nth-child(even) .step-marker {
+            left: -20px;
+        }
+
+        .step-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Case Studies - Product Showcase */
+        .case-study-card {
+            background: var(--bg-charcoal);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+
+        .case-study-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 30px 80px rgba(0, 102, 255, 0.2);
+        }
+
+        .case-study-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-graphite), var(--bg-charcoal));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.1;
+            animation: caseStudyGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes caseStudyGlow {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.2; }
+        }
+
+        .case-study-content {
+            padding: 2.5rem;
+        }
+
+        .case-study-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+        }
+
+        .case-study-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .case-study-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        /* Trust Indicators */
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .trust-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .trust-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+        }
+
+        .trust-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: trustPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes trustPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .trust-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .trust-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Contact CTA - Conversion Focused */
+        .contact-cta {
+            position: relative;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 6rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            animation: ctaRotate 20s linear infinite;
+        }
+
+        @keyframes ctaRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 102, 255, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-charcoal);
+            border-top: 1px solid var(--glass-border);
+            padding: 6rem 0 3rem;
+        }
+
+        .footer-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .footer-tagline {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 300px;
+        }
+
+        .footer-links h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .architecture-visualization {
+                display: none;
+            }
+            
+            .process-timeline::before {
+                left: 30px;
+            }
+            
+            .process-step:nth-child(odd),
+            .process-step:nth-child(even) {
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            
+            .process-step:nth-child(odd) .step-marker,
+            .process-step:nth-child(even) .step-marker {
+                left: -10px;
+                right: auto;
+            }
+            
+            .contact-cta {
+                padding: 4rem 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+            }
+            
+            .hero-stats {
+                gap: 2rem;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
+        }
+
+        /* Loading Animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        /* Magnetic Button Effect */
+        .magnetic-btn {
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Progress -->
+    <div class="loading-bar"></div>
+
+    <!-- Enhanced Background System -->
+    <div class="background-system">
+        <div class="grid-pattern"></div>
+        <div class="energy-orb orb-1"></div>
+        <div class="energy-orb orb-2"></div>
+    </div>
+
+    <!-- Cinematic Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">AFKAR</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);">☰</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#process">Process</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#work">Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link nav-cta" href="#contact">Start Project</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-grid" id="heroGrid"></div>
+        <div class="architecture-visualization" id="architectureVis"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">Enterprise-Grade Engineering</div>
+                <h1 class="hero-title">
+                    Building Digital Systems<br>
+                    That <span class="gradient-text">Scale Billions</span>
+                </h1>
+                <p class="hero-subtitle">
+                    We architect high-performance digital infrastructure for Fortune 500 companies 
+                    and ambitious startups. From AI-driven platforms to global-scale applications, 
+                    we deliver production-ready systems engineered for growth.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="98">0</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="42">0</div>
+                        <div class="stat-label">Products Launched</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="3">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="99">0</div>
+                        <div class="stat-label">Uptime SLA</div>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#contact" class="btn btn-primary magnetic-btn">Start Engineering</a>
+                    <a href="#work" class="btn btn-outline-light border-2">View Case Studies</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Engineering Expertise</div>
+                <h2 class="section-title">System Architecture Solutions</h2>
+                <p class="section-subtitle">
+                    Modular, scalable engineering services designed to integrate seamlessly 
+                    into your digital ecosystem and deliver measurable business impact.
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-module reveal">
+                    <div class="service-icon">⚡</div>
+                    <h3 class="service-title">Cloud-Native Development</h3>
+                    <p class="service-description">
+                        Build scalable applications using microservices, serverless architecture, 
+                        and container orchestration. Deploy on AWS, GCP, or Azure with enterprise-grade security.
+                    </p>
+                    <ul class="service-features">
+                        <li>Kubernetes & Docker orchestration</li>
+                        <li>Serverless function architecture</li>
+                        <li>CI/CD pipeline automation</li>
+                        <li>Infrastructure as Code</li>
+                    </ul>
+                </div>
+                <div class="service-module reveal">
+                    <div class="service-icon">🤖</div>
+                    <h3 class="service-title">AI & Machine Learning</h3>
+                    <p class="service-description">
+                        Implement intelligent systems that learn, adapt, and optimize business processes. 
+                        From predictive analytics to computer vision and natural language processing.
+                    </p>
+                    <ul class="service-features">
+                        <li>Custom ML model development</li>
+                        <li>Real-time inference systems</li>
+                        <li>Data pipeline engineering</li>
+                        <li>MLOps implementation</li>
+                    </ul>
+                </div>
+                <div class="service-module reveal">
+                    <div class="service-icon">🔐</div>
+                    <h3 class="service-title">Enterprise Security</h3>
+                    <p class="service-description">
+                        Comprehensive security solutions including penetration testing, compliance 
+                        frameworks, and secure architecture design for regulated industries.
+                    </p>
+                    <ul class="service-features">
+                        <li>SOC 2 & ISO 27001 compliance</li>
+                        <li>Zero-trust architecture</li>
+                        <li>Real-time threat detection</li>
+                        <li>Security audit & assessment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section" style="background: var(--bg-charcoal);">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Engineering Methodology</div>
+                <h2 class="section-title">Systematic Development Process</h2>
+                <p class="section-subtitle">
+                    A disciplined, phased approach to digital product development, optimized 
+                    for quality, velocity, and predictable delivery.
+                </p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-step reveal">
+                    <div class="step-marker">01</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Architecture Design</h3>
+                        <p class="step-description">
+                            Comprehensive system architecture planning including technology 
+                            stack selection, database design, API specifications, and scaling strategy.
+                        </p>
+                    </div>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-marker">02</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Agile Development</h3>
+                        <p class="step-description">
+                            Two-week sprint cycles with continuous integration and deployment. 
+                            Regular demos, code reviews, and quality assurance at every stage.
+                        </p>
+                    </div>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-marker">03</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Quality Assurance</h3>
+                        <p class="step-description">
+                            Automated testing, performance optimization, security auditing, 
+                            and user acceptance testing to ensure production-ready quality.
+                        </p>
+                    </div>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-marker">04</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Launch & Scale</h3>
+                        <p class="step-description">
+                            Strategic deployment with zero downtime, performance monitoring, 
+                            and continuous optimization based on real-world usage data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section id="work" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Engineering Portfolio</div>
+                <h2 class="section-title">Production Systems</h2>
+                <p class="section-subtitle">
+                    Real-world solutions delivering measurable business impact for global enterprises 
+                    and high-growth startups.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="case-study-card reveal">
+                        <div class="case-study-image"></div>
+                        <div class="case-study-content">
+                            <div class="case-study-label">FinTech</div>
+                            <h3 class="case-study-title">Global Payment Platform</h3>
+                            <p class="case-study-description">
+                                Built a real-time payment processing system handling $2B+ 
+                                annually across 50+ countries with 99.99% uptime.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="case-study-card reveal">
+                        <div class="case-study-image"></div>
+                        <div class="case-study-content">
+                            <div class="case-study-label">Healthcare AI</div>
+                            <h3 class="case-study-title">Diagnostic Platform</h3>
+                            <p class="case-study-description">
+                                Developed an AI-powered diagnostic system with 94% accuracy 
+                                rate, processing 100K+ medical images daily.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="case-study-card reveal">
+                        <div class="case-study-image"></div>
+                        <div class="case-study-content">
+                            <div class="case-study-label">E-Commerce</div>
+                            <h3 class="case-study-title">Marketplace Architecture</h3>
+                            <p class="case-study-description">
+                                Scalable e-commerce platform supporting 5M+ products and 
+                                500K concurrent users with sub-second response times.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section id="about" class="section" style="background: var(--bg-charcoal);">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Engineering Excellence</div>
+                <h2 class="section-title">Why Partner With Afkar</h2>
+                <p class="section-subtitle">
+                    We combine deep technical expertise with rigorous engineering discipline 
+                    to deliver production-ready systems that scale.
+                </p>
+            </div>
+            <div class="trust-grid">
+                <div class="trust-card reveal">
+                    <div class="trust-icon">⚡</div>
+                    <h3 class="trust-title">Performance First</h3>
+                    <p class="trust-description">
+                        Every system optimized for speed, scalability, and reliability from 
+                        day one. We build for millions of users from the start.
+                    </p>
+                </div>
+                <div class="trust-card reveal">
+                    <div class="trust-icon">🔒</div>
+                    <h3 class="trust-title">Security by Design</h3>
+                    <p class="trust-description">
+                        Enterprise-grade security integrated throughout the development 
+                        lifecycle, not bolted on as an afterthought.
+                    </p>
+                </div>
+                <div class="trust-card reveal">
+                    <div class="trust-icon">📈</div>
+                    <h3 class="trust-title">Measurable Impact</h3>
+                    <p class="trust-description">
+                        We track and optimize for business outcomes, not just technical 
+                        deliverables. Your success is our primary metric.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="contact-cta reveal">
+                <div class="position-relative" style="z-index: 2;">
+                    <h2 class="cta-title">Ready to Build?</h2>
+                    <p class="cta-subtitle">
+                        Schedule a technical consultation to discuss your project requirements, 
+                        architecture needs, and engineering timeline.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="mailto:engineering@afkar.io" class="btn btn-primary magnetic-btn">
+                            Start Engineering Discussion
+                        </a>
+                        <a href="#" class="btn btn-outline-light border-2">
+                            View Technical Specs
+                        </a>
+                    </div>
+                    <p class="text-secondary mt-4 small">
+                        Response time: < 2 hours • Initial consultation: 45 minutes
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                    <div class="footer-logo">AFKAR</div>
+                    <p class="footer-tagline">
+                        Elite software engineering and digital product development 
+                        for companies building the future.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">GitHub</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Email</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-5">
+                    <div class="footer-links">
+                        <h5>Services</h5>
+                        <a href="#services">Product Development</a>
+                        <a href="#services">AI Engineering</a>
+                        <a href="#services">Platform Architecture</a>
+                        <a href="#services">Security & Compliance</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-5">
+                    <div class="footer-links">
+                        <h5>Company</h5>
+                        <a href="#about">About Us</a>
+                        <a href="#process">Engineering Process</a>
+                        <a href="#work">Case Studies</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-5">
+                    <div class="footer-links">
+                        <h5>Resources</h5>
+                        <a href="#">Technical Blog</a>
+                        <a href="#">Engineering Standards</a>
+                        <a href="#">Open Source</a>
+                        <a href="#">Careers</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        © 2026 Afkar Engineering. All rights reserved.
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="text-secondary text-decoration-none me-3">Privacy</a>
+                        <a href="#" class="text-secondary text-decoration-none">Terms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Enhanced Scroll Animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const processSteps = document.querySelectorAll('.process-step');
+
+        const scrollHandler = () => {
+            const windowHeight = window.innerHeight;
+            const revealPoint = 150;
+
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - revealPoint) {
+                    element.classList.add('active');
+                }
+            });
+
+            processSteps.forEach(step => {
+                const stepTop = step.getBoundingClientRect().top;
+                if (stepTop < windowHeight - revealPoint) {
+                    step.classList.add('visible');
+                }
+            });
+
+            // Update loading bar
+            const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.loading-bar').style.width = `${scrollPercentage}%`;
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+
+        // Dynamic Architecture Visualization
+        function createArchitecture() {
+            const container = document.getElementById('architectureVis');
+            if (!container) return;
+
+            // Create nodes
+            for (let i = 0; i < 15; i++) {
+                const node = document.createElement('div');
+                node.className = 'arch-node';
+                node.style.left = `${Math.random() * 100}%`;
+                node.style.top = `${Math.random() * 100}%`;
+                node.style.animationDelay = `${Math.random() * 2}s`;
+                container.appendChild(node);
+            }
+
+            // Create connections
+            for (let i = 0; i < 8; i++) {
+                const line = document.createElement('div');
+                line.className = 'arch-line';
+                const x1 = Math.random() * 80 + 10;
+                const y1 = Math.random() * 80 + 10;
+                const x2 = Math.random() * 80 + 10;
+                const y2 = Math.random() * 80 + 10;
+                
+                const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+                
+                line.style.width = `${length}%`;
+                line.style.left = `${x1}%`;
+                line.style.top = `${y1}%`;
+                line.style.transform = `rotate(${angle}deg)`;
+                line.style.animationDelay = `${Math.random() * 3}s`;
+                
+                container.appendChild(line);
+            }
+        }
+
+        // Animated Counter
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-value');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                // Start animation when element is in view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCounter();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(counter);
+            });
+        }
+
+        // Magnetic Button Effect
+        function initMagneticButtons() {
+            const buttons = document.querySelectorAll('.magnetic-btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mousemove', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const deltaX = (x - centerX) / centerX;
+                    const deltaY = (y - centerY) / centerY;
+                    
+                    button.style.transform = `translate(${deltaX * 10}px, ${deltaY * 10}px)`;
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+
+        // Hero Grid Animation
+        function initHeroGrid() {
+            const grid = document.getElementById('heroGrid');
+            if (!grid) return;
+            
+            for (let i = 0; i < 144; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.style.animationDelay = `${Math.random() * 2}s`;
+                grid.appendChild(cell);
+            }
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            initHeroGrid();
+            createArchitecture();
+            initMagneticButtons();
+            scrollHandler(); // Initial check
+            animateCounters();
+        });
+
+        // Event Listeners
+        window.addEventListener('scroll', scrollHandler);
+        window.addEventListener('resize', scrollHandler);
+    </script>
+</body>
+</html>
